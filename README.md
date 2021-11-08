@@ -35,15 +35,15 @@ Está comentada ya que solo funciona al correr el programa dentro de SASM. En es
 
 En segundo lugar, tenemos la section .data donde declaramos e inicializamos las variables que vamos a utilizar en la funcion.
 
-- Parametros de entrada: Almacenan los valores que envía el programa en C
+- Parametros de entrada: Almacenarán los valores que envía el programa en C
 
-- Variables temporales: Almacenan resultados temporales del calculo
+- Variables temporales: Almacenarán resultados temporales del calculo
 
-- Resultados: Almacenan el resultado de las raices
+- Resultados: Almacenarán los resultados de las raices
 
 - Formato: Almacena el formato del mensaje que se mostrará al finalizar el calculo
 
-- Constantes: Almacenan el 4 y el 2 que nos encontramos en la formula resolvente
+- Constantes: Almacenan el 4 y el 2 que nos encontramos en la formula resolvente por definición
 
 ![image](https://user-images.githubusercontent.com/21018256/140768653-95552568-2835-4328-a48f-d8f2c3746ba9.png)
 
