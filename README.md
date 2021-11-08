@@ -2,6 +2,8 @@
 
 Trabajo práctico de programación en C y Assembler.
 
+Estos ejercicios fueron desarrollados y testeado en Ubutu 16.04 utilizando Visual Studio Code para la parte de C, SASM para la parte de Assembler y la consola de Linux para linkear ambos archivos y ejecutar el ejecutable final.
+
 **Formula Resolvente**
 
 El problema consiste en calcular las raíces de una función cuadrática a través de la formula resolvente.
