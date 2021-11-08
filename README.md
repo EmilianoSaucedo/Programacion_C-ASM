@@ -55,7 +55,7 @@ Luego, comenzamos con la lógica:
 
 - Realizamos un enter 0,0 para inicializar la pila
 
-- Leemos los parametros de entrada que se encuentran en la pila. Para eso pedimos [ebp + 8] ya que en esa ubicación tenemos el primer parametro de entrada. Recordar que en ebp + 4 tenemos el EIP (direccion del programa al que debe retornar). Como cada registro tiene 32 bits, nos movemos de a 4 para seguir capturando los otros 2 parametros. A cada uno de estos los apilamos en la pila de la FPU con el comando fld y lo almacenamos en nuestras variables a partir de un fstp (store y desapilar) utilizando qword ya que es el tamaño de las variables.
+- Leemos los parametros de entrada que se encuentran en la pila. Para eso pedimos [ebp + 8] ya que en esa ubicación tenemos el primer parametro de entrada. Recordar que en ebp + 4 tenemos el EIP (direccion del programa al que debe retornar). Como cada registro tiene 32 bits, nos movemos de a 4 bytes para seguir capturando los otros 2 parametros. A cada uno de estos los apilamos en la pila de la FPU con el comando fld y lo almacenamos en nuestras variables a partir de un fstp (store y desapilar) utilizando qword ya que es el tamaño de las variables.
 
 ![image](https://user-images.githubusercontent.com/21018256/140770742-2954c659-7233-4c39-aad1-e13eee5bdf4f.png)
 
