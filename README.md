@@ -85,13 +85,14 @@ Paso 8: Aplicamos lo mismo que el paso 7 pero en lugar de fadd, aplicamos fsub p
 
 ![image](https://user-images.githubusercontent.com/21018256/140773528-bd79797a-4045-4498-abd8-2fd093444985.png)
 
-Una vez que ya tenemos los resultados en nuestras variables, los cargamos en la pila (no en la pila de la FPU). Para esto usamos push y realizamos la carga de cada dato en 2 pasos ya que debemos cargarlos como dword (qword no entra en la pila por su tamaño). Es por esto que primero cargamos [esultado+4]y luego [esultado]. Realizamos esta operacion para ambos resultados y luego apilamos la variable "msg" que cuenta con %f en 2 ocasiones para reemplazar por los valores cargados en la pila anteriormente.
+Una vez que ya tenemos los resultados en nuestras variables, los cargamos en la pila (no en la pila de la FPU). Para esto usamos push y realizamos la carga de cada dato en 2 pasos ya que debemos cargarlos como dword (qword no entra en la pila por su tamaño). Es por esto que primero cargamos [resultado+4]y luego [resultado]. Realizamos esta operacion para ambos resultados y luego apilamos la variable "msg" que cuenta con %f en 2 ocasiones para reemplazar por los valores cargados en la pila anteriormente.
 
-Luego llamamos a la funcion printf (funcion que detallamos como extern ya que su implementacion no esta en este archivo) para imprimir por pantalla lo que cargamos en la pila
+Luego llamamos a la funcion printf (funcion que detallamos como extern ya que su implementacion no esta en este archivo) para imprimir por pantalla los resultados
 
 ![image](https://user-images.githubusercontent.com/21018256/140774339-9a39022d-c41f-45ad-95af-49c8ee92ccbd.png)
 
-Luego, sumamos 20 al puntero de la pila ESP (4 por cada push que hicimos) y aplicamos un "leave" para dejar la pila como estaba antes del llamado a esta función. Finalizamos con un ret.
+Sumamos 20 al puntero de la pila ESP (4 por cada push que hicimos) y aplicamos un "leave" para dejar la pila como estaba antes del llamado a esta función.
+Finalizamos con un ret.
 
 
 Y ahora que ya tenemos los códigos, cómo los vinculamos y ejecutamos?
@@ -100,7 +101,7 @@ Para esto, tenemos el archivo "FormulaResolvente.sh" que contiene los comando a 
 
 Allí encontramos el comando "nasm -f elf32 LogicaFormResolvente.asm -o LogicaFormResolvente.o;" que se encarga de compilar el archivo asm generando un archivo objeto, el cual detallamos el nombre al final de la instrucción.
 
-"gcc -m32 -o ejecutableFormResolvente LogicaFormResolvente.o MainFormResolvente.c;" para que el linker vincule el archivo objeto del .asm con el archivo .c y genere un ejecutable.
+"gcc -m32 -o ejecutableFormResolvente LogicaFormResolvente.o MainFormResolvente.c;" para que el linker vincule el archivo objeto (.o) del .asm con el archivo .c y genere un ejecutable.
 
 "/ejecutableFormResolvente;" para ejecutar nuestro programa que se verá de la siguiente manera...
 
@@ -115,7 +116,7 @@ El problema consiste en recibir un numero r y un puntero a un vector de numeros 
 
 Para la resolución de esto, se realizó un programa en asm que contiene la siguiente lógica:
 
--  comenta la primera linea que incluye una librería propia de SASM, la cual no necesitamos ya que ejecutaremos el programa desde la consola de Linux
+- Se comenta la primera linea que incluye una librería propia de SASM, la cual no necesitamos ya que ejecutaremos el programa desde la consola de Linux. En caso de querer ejecutar este programa en SASM, se debe descomentar esta linea.
 
 - Declaramos como externa la funcion printf ya que la implementacion no se encuentra en este programa
 
@@ -123,7 +124,7 @@ Para la resolución de esto, se realizó un programa en asm que contiene la sigu
 
   - puntero: Vector con numeros a multiplicar
 
-  - resultado: Rsultado temporal de cada multiplicacion
+  - resultado: Resultado temporal de cada multiplicacion
 
   - msg: Mensaje que se va a mostrar en pantalla a medida que se realicen los calculos
 
@@ -137,11 +138,11 @@ Para la resolución de esto, se realizó un programa en asm que contiene la sigu
 
 ![image](https://user-images.githubusercontent.com/21018256/140778086-caf44f5c-4446-4a14-b35d-92f56d54d1ed.png)
 
-Luego tenemos la section .text, donde declaramos como global la funcion main (la cual comenzará al ejecutar el ejecutable desde la consola). Y luego comenzamos con la lógica de dicha función
+Tenemos la section .text, donde declaramos como global la funcion main (la cual comenzará al ejecutar el ejecutable desde la consola). Y luego comenzamos con la lógica de dicha función
 
 - mov ebp, esp para inicializar la pila
 
-- Apilamos en pila con push el puntero que contiene la dirección al primer valor del vector. Además, apilamos r en 2 partes, ya que es de tamaño qword y no entra en el registro de pila. Por eso cargamos [r+4] y luego [r]
+- Apilamos en pila con push el puntero que contiene la dirección al primer numero del vector. Además, apilamos r en 2 partes, ya que es de tamaño qword y no entra en el registro de pila. Por eso cargamos [r+4] y luego [r]
 
 - Una vez que ya tenemos cargados el puntero del vector y el multiplicador, llamamos a la funcion "producto_rvf" la cual esta declarada como global.
 
@@ -151,15 +152,15 @@ Pasemos a ver en detalle la función "producto_rvf"
 
 - Realizamos un enter 0,0 para inicializar la pila
 
-- Cargamos en registros un contador, "limite" que contiene la cantidad de numeros del vector y el puntero al primer elemento del vector
+- Cargamos en registros un contador, el valor de "limite" que contiene la cantidad de numeros del vector y el puntero al primer elemento del vector
 
-- Cargamos en la pila de la FPU con fld el multiplicador y luego lo almaceno en la variable "multiplicador" con la instruccion fst
+- Cargamos en la pila de la FPU con "fld" el multiplicador y luego lo almaceno en la variable "multiplicador" con la instruccion "fst"
 
 ![image](https://user-images.githubusercontent.com/21018256/140779416-29f81341-9fff-4d60-ae0c-6afaf13219b9.png)
 
 - Declaramos la etiqueta "calcular" que más adelante veremos para qué se usa
 
-- Comenzamos a trabajar con la pila de la FPU para realizar los calculos de multiplicacion. En primer lugar, cargamos el numero actual del vector (que ira cambiando a lo largo de la funcion). Para esto, utilizamos el valor de EBX (que contiene la dirección del primer elemento del vector) y le sumamos "esi + 8". Por que? Porque el registro "esi" tiene guardado el contador y 8 es la cantidad de bytes que nos tenemos que mover para encontrar al proximo elemento del vector. Por lo tanto, con "esi + 8" podemos ir recorriendo el vector, siempre y cuando arranquemos en la primera posición utilizando "EBX".
+- Comenzamos a trabajar con la pila de la FPU para realizar los calculos de multiplicacion. En primer lugar, cargamos el numero actual del vector (que ira cambiando a lo largo de la funcion). Para esto, utilizamos el valor de EBX (que contiene la dirección del primer elemento del vector) y le sumamos "esi + 8". Por que? Porque el registro "esi" tiene guardado el contador y 8 es la cantidad de bytes que nos tenemos que mover para encontrar al proximo elemento del vector. Por lo tanto, con "esi + 8" podemos ir recorriendo el vector, siempre y cuando arranquemos desde la primera posición del vector utilizando la direccion que tenemos en "EBX".
 
 - Almacenamos con fst el numero del vector actual en la variable "numeroDelVector"
 
@@ -173,7 +174,7 @@ Una vez que tenemos almacenado el resultado de la multiplicacion actual, debemos
 
 - Para esto, cargamos en 2 partes (ya que "resultado" es de tipo qword y no entra en los registros de la pila) el valor del resultado, del multiplicador, del valor actual del vector y del contador
 
-- Luego apilamos "msg" que contiene caracteres como %f y %s para incluir los valores antes apilados
+- Luego apilamos "msg" que contiene caracteres como %f (para float) y %s (para strings) para incluir los valores antes apilados
 
 - Llamamos a la funcion printf y obtenemos en pantalla el mensaje con el resultado de la multiplicación
 
@@ -181,17 +182,17 @@ Una vez que tenemos almacenado el resultado de la multiplicacion actual, debemos
 
 ![image](https://user-images.githubusercontent.com/21018256/140780808-b7fd2359-f7a0-4571-8f1a-49785a7425a3.png)
 
-- Sumamos 12 al puntero ESP de la pila, ya que realizamos varios push y queremos deshacernos de esos datos (sumamos 4 por cada push realizado)
+- Sumamos 12 al puntero ESP de la pila, ya que realizamos varios push y queremos deshacernos de esos datos (sumamos 4 bytes por cada push realizado)
 
 Pero... tenemos el producto de un solo elemento del vector, cómo hacemos para obtener el producto escalar del vector entero?
 
 - Incrementamos el contador con "inc esi"
 
-- Usamos la instruccion "cmp esi, [limite]" que compara si el "esi" es igual al "limite"
+- Usamos la instruccion "cmp esi, [limite]" que compara "esi" con el valor de "limite"
 
-  - En caso negativo, realizamos un salto con jl a la etiqueta calcular. Allí realizamos la misma lógica pero con el contador incrementado, lo cual nos permite trabajar con el siguiente numero del vector.
+  - En caso que "esi" sea menor que "limite", realizamos un salto con jl a la etiqueta calcular. Allí realizamos la misma lógica pero con el contador incrementado, lo cual nos permite trabajar con el siguiente numero del vector.
 
-  - En caso positivo, es decir, cuando ya recorrimos todo el vector y el contador es igual al limite, realizamos un leave para dejar la pila en orden y finalizamos con un ret. De esta forma volvemos a la funcion main y ya imprimimos en pantalla el producto escalar solicitado.
+  - En caso que "esi" sea igual o mayor que "limite", es decir, cuando ya recorrimos todo el vector y el contador es igual al limite, "jl" no aplica el salto y realizamos un leave para dejar la pila en orden y finalizamos con un ret. De esta forma volvemos a la funcion main y ya imprimimos en pantalla el producto escalar solicitado.
 
 ![image](https://user-images.githubusercontent.com/21018256/140781910-711472b0-b157-42e4-b52d-d4c17e744a3a.png)
 
