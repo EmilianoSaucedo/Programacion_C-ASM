@@ -97,13 +97,17 @@ Finalizamos con un ret.
 
 Y ahora que ya tenemos los códigos, cómo los vinculamos y ejecutamos?
 
-Para esto, tenemos el archivo "FormulaResolvente.sh" que contiene los comando a ejecutar en la consola de Linux
+Para esto, tenemos el archivo "FormulaResolvente.sh" que contiene los siguientes comandos
 
 Allí encontramos el comando "nasm -f elf32 LogicaFormResolvente.asm -o LogicaFormResolvente.o;" que se encarga de compilar el archivo asm generando un archivo objeto, el cual detallamos el nombre al final de la instrucción.
 
 "gcc -m32 -o ejecutableFormResolvente LogicaFormResolvente.o MainFormResolvente.c;" para que el linker vincule el archivo objeto (.o) del .asm con el archivo .c y genere un ejecutable.
 
 "/ejecutableFormResolvente;" para ejecutar nuestro programa que se verá de la siguiente manera...
+
+Para ejecutar, debemos dar permisos de ejecucion a nuestro "FormulaResolvente.sh". Para esto, abrimos la consola de Linux, navegamos con el comando CD hasta la carpeta donde se encuentra el .sh e ingresamos "chmod +x FormulaResolvente.sh"
+
+Luego "./FormulaResolvente.sh" y listo. Se ejecuta el programa
 
 ![image](https://user-images.githubusercontent.com/21018256/140776200-e05ce31a-a953-48f8-98ae-935acc2c89cb.png)
 
@@ -204,13 +208,17 @@ Esto nos devuelve por pantalla el producto escalar del vector y el multiplicador
 
 ![image](https://user-images.githubusercontent.com/21018256/140782259-61972624-85af-441f-8ac8-6959ba25fbce.png)
 
-Para ejecutarlo, tenemos comandos en el archivo "ProductoEscalar.sh" que debemos ejecutar en la consola de Linux.
+Para ejecutarlo, tenemos el archivo "ProductoEscalar.sh" que debemos ejecutar en la consola de Linux.
 
 - nasm -f elf32 ProductoEscalar.asm -o ProductoEscalar.o; Con este comando ingresamos el nombre del archivo .asm y nos genera el archivo objeto (.o) con el nombre que le detallamos al final del comando
 
 - gcc -m32 ProductoEscalar.o -o ejecutableProductoEscalar; Con gcc generamos un ejecutable a partir del archivo .o que generamos en el paso anterior. Al final del comando ingresamos el nombre que deseamos para nuestro ejecutable.
 
 - ./ejecutableProductoEscalar; Con este comando ejecutamos el ejecutable generado.
+
+Para ejecutar el .sh, debemos dar permisos de ejecucion a nuestro "ProductoEscalar.sh". Para esto, abrimos la consola de Linux, navegamos con el comando CD hasta la carpeta donde se encuentra el .sh e ingresamos "chmod +x ProductoEscalar.sh"
+
+Luego "./ProductoEscalar.sh" y listo. Se ejecuta el programa
 
 ![image](https://user-images.githubusercontent.com/21018256/140783248-675db5ea-6d46-4ed7-a9a5-5200010d7608.png)
 
