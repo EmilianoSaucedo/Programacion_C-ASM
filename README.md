@@ -69,7 +69,7 @@ Paso 2: Apilamos el parametro B y con fmul st0, st0 lo multiplicamos por si mism
 
 Paso 3: Apilamos el 4, el parametro A y el parametro C. Con el primer fmul, multiplicamos 4 y A, y con el segundo fmul, multiplicamos el resultado de la operacion anterior con C. ----> 4.a.c
 
-Paso 4: Restamos con fsub el resultado del paso 2 con el resultado del paso 3 que quedaron guardados en el tope de la pila (st0 y st1) ----> B²-4.q.c
+Paso 4: Restamos con fsub el resultado del paso 2 con el resultado del paso 3 que quedaron guardados en el tope de la pila (st0 y st1) ----> B²-4.a.c
 
 Paso 5: Al resultado del paso 4, que quedó en el tope de la pila, le aplicamos raiz cuadrada y almacenamos el resultado en la variable temporal de la raiz ----> √B²-4.a.c
 
